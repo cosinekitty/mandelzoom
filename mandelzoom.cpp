@@ -22,19 +22,42 @@
     SOFTWARE.
 */
 
+#include <cstdlib>
 #include <cstdio>
 
 static int PrintUsage();
+static int GenerateZoomFrames(const char *outdir, int numsteps, double xcenter, double ycenter, double zoom);
+
 
 int main(int argc, const char *argv[])
 {
+    if (argc == 6)
+    {
+        const char *outdir = argv[1];
+        int numsteps = atoi(argv[2]);
+        if (numsteps < 1)
+        {
+            fprintf(stderr, "ERROR: Invalid number of steps on command line.\n");
+            return 1;
+        }
+        double xcenter = atof(argv[3]);
+        double ycenter = atof(argv[4]);
+        double zoom = atof(argv[5]);
+        if (zoom < 1.0)
+        {
+            fprintf(stderr, "ERROR: zoom factor must be 1.0 or greater.\n");
+            return 1;
+        }
+        return GenerateZoomFrames(outdir, numsteps, xcenter, ycenter, zoom);
+    }
+
     return PrintUsage();
 }
 
 
 static int PrintUsage()
 {
-    fprintf(stderr, 
+    fprintf(stderr,
         "\n"
         "USAGE:\n"
         "\n"
@@ -47,5 +70,10 @@ static int PrintUsage()
         "\n"
     );
 
+    return 1;
+}
+
+static int GenerateZoomFrames(const char *outdir, int numsteps, double xcenter, double ycenter, double zoom)
+{
     return 1;
 }
