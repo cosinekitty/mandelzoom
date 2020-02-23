@@ -24,10 +24,28 @@
 
 #include <cstdlib>
 #include <cstdio>
+#include <vector>
+#include "lodepng.h"
+
+class VideoFrame
+{
+private:
+    int width;
+    int height;
+    std::vector<unsigned char> buffer;
+
+public:
+    VideoFrame(int _width, int _height)
+        : width(_width)
+        , height(_height)
+        , buffer(4 * _width * _height)
+        {}
+
+    
+};
 
 static int PrintUsage();
 static int GenerateZoomFrames(const char *outdir, int numsteps, double xcenter, double ycenter, double zoom);
-
 
 int main(int argc, const char *argv[])
 {
@@ -75,5 +93,6 @@ static int PrintUsage()
 
 static int GenerateZoomFrames(const char *outdir, int numsteps, double xcenter, double ycenter, double zoom)
 {
+    VideoFrame frame(1280, 720);    // create a video frame with 720p resolution
     return 1;
 }
