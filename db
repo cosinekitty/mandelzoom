@@ -1,0 +1,10 @@
+#!/bin/bash
+Fail()
+{
+    echo "FATAL($0): $1"
+    exit 1
+}
+
+g++ -Wall -Werror -O0 -g -o mandelzoom mandelzoom.cpp lodepng.cpp || Fail "Error building C++ code."
+rm -rf movie || Fail "Error deleting movie directory."
+mkdir movie || Fail "Error creating movie directory."
