@@ -53,7 +53,7 @@ public:
 
     void SetPixel(int x, int y, PixelColor color)
     {
-        int index = 4 * (y*width + height);
+        int index = 4 * (y*width + x);
         buffer[index]   = color.red;
         buffer[index+1] = color.green;
         buffer[index+2] = color.blue;
