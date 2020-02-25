@@ -5,7 +5,9 @@ Fail()
     exit 1
 }
 
+echo "Building C++ code..."
 g++ -Wall -Werror -Ofast -o mandelzoom mandelzoom.cpp lodepng.cpp || Fail "Error building C++ code."
 rm -rf movie || Fail "Error deleting movie directory."
 mkdir movie || Fail "Error creating movie directory."
-./mandelzoom movie 3 -0.74498410019 -0.13523854817 3.0e6 || Fail "Error running Mandelbrot Zoom program."
+./mandelzoom movie $(( 30 * 15 )) -0.74498410019 -0.13523854817 1.0e8 || Fail "Error running Mandelbrot Zoom program."
+ffmpeg -r 30 -f image2 -s 1280x720 -i movie/frame_%05d.png -vcodec libx264 -crf 25 -pix_fmt yuv420p zoom.mp4 || Fail "Error in ffmpeg."

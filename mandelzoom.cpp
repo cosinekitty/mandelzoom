@@ -63,7 +63,12 @@ public:
     int SavePng(const char *outFileName)
     {
         unsigned error = lodepng::encode(outFileName, buffer, width, height);
-        return error ? 1 : 0;
+        if (error)
+        {
+            fprintf(stderr, "ERROR: lodepng::encode returned %u\n", error);
+            return 1;
+        }
+        return 0;
     }
 };
 
@@ -195,17 +200,30 @@ static int Mandelbrot(double cr, double ci, int limit)
 }
 
 
+static double ZigZag(double x)
+{
+    double y = fmod(fabs(x), 2.0);
+    if (y > 1.0)
+        y = 1.0 - y;
+    return y;
+}
+
+
 static PixelColor Palette(int count, int limit)
 {
     PixelColor color;
 
-    double x;
     if (count >= limit)
-        x = 0.0;
+    {
+        color.red = color.green = color.blue = 0;
+    }
     else
-        x = 255.0 * count / (limit - 1);
-
-    color.red = color.green = color.blue = static_cast<unsigned char>(x);
+    {
+        double x = static_cast<double>(count) / (limit - 1.0);
+        color.red   = static_cast<unsigned char>(255.0 * ZigZag(0.5 + 7.0*x));
+        color.green = static_cast<unsigned char>(255.0 * ZigZag(0.2 + 9.0*x));
+        color.blue  = static_cast<unsigned char>(255.0 * ZigZag(0.7 + 11.0*x));
+    }
     color.alpha = 255;
 
     return color;
