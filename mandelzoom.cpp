@@ -161,13 +161,19 @@ static int GenerateZoomFrames(const char *outdir, int numframes, double xcenter,
                 }
             }
 
+            // Create the output PNG filename in the format "outdir/frame_12345.png".
             char number[20];
             snprintf(number, sizeof(number), "%05d", f);
             std::string filename = std::string(outdir) + "/frame_" + number + ".png";
+
+            // Save the video frame as a PNG file.
             int error = frame.SavePng(filename.c_str());
             if (error)
                 return error;
+
             printf("Wrote %s\n", filename.c_str());
+
+            // Increase the zoom magnification for the next frame.
             denom *= multiplier;
         }
         return 0;
